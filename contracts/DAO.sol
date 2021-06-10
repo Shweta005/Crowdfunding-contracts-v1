@@ -1,3 +1,4 @@
+//SPDX-License-Identifier: UNLICENSED"
 pragma solidity ^0.8.0;
 
 contract DAO{
@@ -10,6 +11,9 @@ contract DAO{
         string proposalName;
         bytes hash;
         address manager;
+        uint256 maximumTarget;
+        uint256 minimumTarget;
+        uint24 duration;
         uint8 isDeployed;
     }
     Proposal[] public proposals;
@@ -38,9 +42,22 @@ contract DAO{
         emit NewOwnerAdded(msg.sender, _newOwner);
     }
 
-    function addProposal(string memory _proposalName, bytes memory _hash) public {
+    function addProposal(
+        string memory _proposalName, 
+        bytes memory _hash,
+        uint256 _maximumTarget,
+        uint256 _minimumTarget,
+        uint24 _duration
+        ) public {
         campaignManagers[msg.sender] = proposals.length;
-        proposals.push(Proposal(_proposalName, _hash, msg.sender, 0));
+        proposals.push(Proposal(
+            _proposalName, 
+            _hash, 
+            msg.sender, 
+            _maximumTarget, 
+            _minimumTarget, 
+            _duration, 
+            0));
         emit NewProposalCreated(msg.sender, (proposals.length-1));
     }
 
